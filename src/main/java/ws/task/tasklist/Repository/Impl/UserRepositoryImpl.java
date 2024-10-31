@@ -27,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
                    u.name     as user_name,
                    u.username as user_username,
                    u.password as user_password,
-                   ur.role as user_role_role,
+                   ur.role as user_roles_role,
                    t.id as task_id,
                    t.title as task_title,
                    t.description as task_description,
@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
                    u.name     as user_name,
                    u.username as user_username,
                    u.password as user_password,
-                   ur.role as user_role_role,
+                   ur.role as user_roles_role,
                    t.id as task_id,
                    t.title as task_title,
                    t.description as task_description,
@@ -65,7 +65,7 @@ public class UserRepositoryImpl implements UserRepository {
             WHERE id = ?
             """;
     private final String CREATE = """
-            INSERT INTO (name, username, password)
+            INSERT INTO users (name, username, password)
             VALUES (?, ?, ?)
             """;
     private final String INSERTT_USER_ROLE = """
@@ -90,7 +90,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
@@ -105,7 +106,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
@@ -120,12 +122,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
-                PreparedStatement statement = connection.prepareStatement(UPDATE);
-                statement.setString(1, user.getName());
-                statement.setString(2,user.getUsername());
-                statement.setString(3, user.getPassword());
-                statement.setLong(4, user.getId());
+        try {
+            Connection connection = dataSourceConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE);
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getUsername());
+            statement.setString(3, user.getPassword());
+            statement.setLong(4, user.getId());
+            statement.executeUpdate();
         } catch (SQLException throwables) {
             throw new ResourceMappingException("Exception while updating user");
         }
@@ -133,13 +137,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void create(User user) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getName());
-            statement.setString(2,user.getUsername());
+            statement.setString(2, user.getUsername());
             statement.setString(3, user.getPassword());
             statement.executeUpdate();
-            try (ResultSet resultSet = statement.getGeneratedKeys()){
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 resultSet.next();
                 user.setId(resultSet.getLong(1));
             }
@@ -150,10 +155,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void insertUserRole(Long userId, Role role) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(INSERTT_USER_ROLE);
             statement.setLong(1, userId);
-            statement.setString(2,role.name());
+            statement.setString(2, role.name());
             statement.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -163,12 +169,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isTaskOwner(Long userId, Long taskId) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try  {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(IS_TASK_OWER);
             statement.setLong(1, userId);
             statement.setLong(1, taskId);
             statement.executeQuery();
-            try (ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
@@ -179,7 +186,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE);
             statement.setLong(1, id);
             statement.executeUpdate();

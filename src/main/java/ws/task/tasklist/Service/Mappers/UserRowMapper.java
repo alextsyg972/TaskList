@@ -8,6 +8,7 @@ import ws.task.tasklist.Entity.User;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class UserRowMapper {
@@ -16,7 +17,7 @@ public class UserRowMapper {
     public static User mapRow(ResultSet resultSet) {
         Set<Role> roles = new HashSet<>();
         while (resultSet.next()) {
-            roles.add(Role.valueOf(resultSet.getString("user_roles_role")));
+            roles.add(Role.valueOf(resultSet.getString("user_roles_role").toUpperCase(Locale.ROOT)));
         }
         resultSet.beforeFirst();
         List<Task> taskList = TaskRowMapper.mapRows(resultSet);

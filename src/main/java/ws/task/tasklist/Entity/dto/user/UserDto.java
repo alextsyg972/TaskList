@@ -24,7 +24,7 @@ public class UserDto {
     @NotNull(message = "Password must be not null", groups = {OnCreate.class, OnUpdate.class})
     private String password;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "Password confirmation must be not null", groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "Password confirmation must be not null", groups = {OnCreate.class})
     private String passwordConfirmation;
 
 }

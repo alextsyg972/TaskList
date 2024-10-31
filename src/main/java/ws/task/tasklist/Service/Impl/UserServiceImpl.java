@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User already exists");
         }
-        if (user.getPassword().equals(user.getPasswordConfirmation())) {
+        if (!user.getPassword().equals(user.getPasswordConfirmation())) {
             throw new IllegalStateException("Password confirmation don't match");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));

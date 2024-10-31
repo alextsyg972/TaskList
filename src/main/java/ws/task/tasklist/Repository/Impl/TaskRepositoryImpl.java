@@ -21,6 +21,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     private final String FIND_BY_ID = """
             select t.id              as task_id,
                    t.title           as task_title,
+                   t.description     as task_description,
                    t.expiration_date as task_expiration_date,
                    t.status          as task_status
             from tasks t
@@ -29,6 +30,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     private final String FIND_ALL_BY_USER_ID = """
             select t.id              as task_id,
                    t.title           as task_title,
+                   t.description     as task_description,
                    t.expiration_date as task_expiration_date,
                    t.status          as task_status
             from tasks t
@@ -62,7 +64,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Optional<Task> findById(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID);
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
@@ -75,7 +78,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> findAllByUser(Long userId) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ID);
             statement.setLong(1, userId);
             try (ResultSet rs = statement.executeQuery()) {
@@ -88,7 +92,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void assignToUserById(Long taskId, Long userId) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(ASSIGN);
             statement.setLong(1, taskId);
             statement.setLong(2, userId);
@@ -100,7 +105,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void update(Task task) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, task.getTitle());
             if (task.getDescription() == null) {
@@ -109,7 +115,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 statement.setString(2, task.getDescription());
             }
             if (task.getExpirationDate() == null) {
-                statement.setNull(3, Types.VARCHAR);
+                statement.setNull(3, Types.TIMESTAMP);
             } else {
                 statement.setTimestamp(3, Timestamp.valueOf(task.getExpirationDate()));
             }
@@ -123,7 +129,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void create(Task task) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, task.getTitle());
             if (task.getDescription() == null) {
@@ -132,7 +139,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 statement.setString(2, task.getDescription());
             }
             if (task.getExpirationDate() == null) {
-                statement.setNull(3, Types.VARCHAR);
+                statement.setNull(3, Types.TIMESTAMP);
             } else {
                 statement.setTimestamp(3, Timestamp.valueOf(task.getExpirationDate()));
             }
@@ -149,7 +156,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE);
             statement.setLong(1,id);
             statement.executeUpdate();

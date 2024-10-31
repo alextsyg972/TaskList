@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ws.task.tasklist.Repository.UserRepository">
+    <resultMap id="UserResultMap" type="ws.task.tasklist.Entity.User" autoMapping="false">
+        <id property="id" column="user_id"/>
+        <result property="name" column="user_name"/>
+        <result property="username" column="user_username"/>
+        <result property="password" column="user_password"/>
+        <collection property="roles"
+                    ofType="ws.task.tasklist.Entity.Role"
+                    autoMapping="false">
+        <result property="name" column="user_roles_role"/>
+        </collection>
+        <collection property="tasks"
+                    ofType="ws.task.tasklist.Entity.Task"
+                    resultMap="ws.task.tasklist.Repository.TaskRepository.TaskResultMap"
+                    autoMapping="false"/>
+    </resultMap>
+</mapper>

@@ -30,17 +30,19 @@ public class UserController {
     private final UserMapper userMapper;
     private final TaskMapper taskMapper;
 
-    @PutMapping
-    public UserDto update(@Validated(OnUpdate.class) @RequestBody UserDto dto) {
-        User user = userMapper.toEntity(dto);
-        User updatedUser = userService.update(user);
-        return userMapper.toDto(updatedUser);
-    }
+
 
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable Long id) {
         User user = userService.getById(id);
         return userMapper.toDto(user);
+    }
+
+    @PutMapping
+    public UserDto update(@Validated(OnUpdate.class) @RequestBody UserDto dto) {
+        User user = userMapper.toEntity(dto);
+        User updatedUser = userService.update(user);
+        return userMapper.toDto(updatedUser);
     }
 
     @DeleteMapping("/{id}")
