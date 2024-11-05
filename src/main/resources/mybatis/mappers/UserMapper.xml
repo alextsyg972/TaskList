@@ -11,11 +11,80 @@
         <collection property="roles"
                     ofType="ws.task.tasklist.Entity.Role"
                     autoMapping="false">
-        <result property="name" column="user_roles_role"/>
+            <result property="name" column="users_roles_role"/>
         </collection>
         <collection property="tasks"
                     ofType="ws.task.tasklist.Entity.Task"
                     resultMap="ws.task.tasklist.Repository.TaskRepository.TaskResultMap"
                     autoMapping="false"/>
     </resultMap>
+
+    <select id="findById" resultMap="UserResultMap">
+        select u.id as user_id,
+        u.name as user_name,
+        u.username as user_username,
+        u.password as user_password,
+        ur.role as users_roles_role,
+        t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.expiration_date as task_expiration_date,
+        t.status as task_status
+        from users u
+        left join users_roles ur on u.id = ur.user_id
+        left join tasklist.users_tasks ut on u.id = ut.user_id
+        left join tasklist.tasks t on ut.task_id = t.id
+        where u.id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="UserResultMap">
+        select u.id as user_id,
+        u.name as user_name,
+        u.username as user_username,
+        u.password as user_password,
+        ur.role as users_roles_role,
+        t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.expiration_date as task_expiration_date,
+        t.status as task_status
+        from users u
+        left join users_roles ur on u.id = ur.user_id
+        left join tasklist.users_tasks ut on u.id = ut.user_id
+        left join tasklist.tasks t on ut.task_id = t.id
+        where u.username = #{username}
+    </select>
+
+    <select id="isTaskOwner" resultType="boolean">
+        SELECT EXISTS(
+        SELECT 1
+        FROM users_tasks
+        WHERE user_id = #{userId}
+        AND task_id = #{taskId}
+        )
+    </select>
+
+    <insert id="insertUserRole">
+        INSERT INTO users_roles (user_id, role)
+        VALUES (#{userId}, #{role})
+    </insert>
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO users (name, username, password)
+        VALUES (#{name}, #{username}, #{password})
+    </insert>
+
+    <update id="update">
+        UPDATE users
+        SET name = #{name}
+        username = #{username}
+        password = #{password}
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="delete">
+        DELETE FROM users
+        WHERE id = #{id}
+    </delete>
 </mapper>

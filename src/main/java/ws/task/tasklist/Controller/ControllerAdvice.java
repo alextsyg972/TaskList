@@ -3,6 +3,7 @@ package ws.task.tasklist.Controller;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,6 +70,12 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
         return new ExceptionBody("Internal error");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleAuthenticationException(AuthenticationException e) {
+        return  new ExceptionBody("Authentication fails");
     }
 
 }
