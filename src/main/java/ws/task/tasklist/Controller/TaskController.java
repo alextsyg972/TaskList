@@ -3,7 +3,6 @@ package ws.task.tasklist.Controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +30,7 @@ public class TaskController {
 
     @PutMapping
     @Operation(summary = "Update Task")
-    @PreAuthorize("canAccessTask(#dto.id)")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#dto.id)")
     public TaskDto update(@Validated(OnUpdate.class) @RequestBody TaskDto dto) {
         Task task = taskMapper.toEntity(dto);
         Task updatedTask = taskService.update(task);
@@ -40,7 +39,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Task by id")
-    @PreAuthorize("canAccessTask(#id)")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
     public TaskDto getById(@PathVariable Long id) {
         Task task = taskService.getById(id);
         return taskMapper.toDto(task);
@@ -48,7 +47,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Task by id")
-    @PreAuthorize("canAccessTask(#id)")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         taskService.delete(id);
         return new ResponseEntity<>("Task with id" + id + "was deleted", HttpStatus.GONE);

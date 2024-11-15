@@ -97,7 +97,7 @@ public class ApplicationConfig {
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest()
                                 .authenticated())
-                .anonymous(anoymous -> anoymous.disable().addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class));
+                .anonymous(anonymous -> anonymous.disable().addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class));
 
         return httpSecurity.build();
     }
