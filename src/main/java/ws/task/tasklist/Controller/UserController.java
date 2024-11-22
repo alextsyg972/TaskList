@@ -14,8 +14,8 @@ import ws.task.tasklist.Entity.dto.task.TaskDto;
 import ws.task.tasklist.Entity.dto.user.UserDto;
 import ws.task.tasklist.Entity.dto.validation.OnCreate;
 import ws.task.tasklist.Entity.dto.validation.OnUpdate;
-import ws.task.tasklist.Service.Mappers.TaskMapper;
-import ws.task.tasklist.Service.Mappers.UserMapper;
+import ws.task.tasklist.Service.mappers.TaskMapper;
+import ws.task.tasklist.Service.mappers.UserMapper;
 import ws.task.tasklist.Service.TaskService;
 import ws.task.tasklist.Service.UserService;
 

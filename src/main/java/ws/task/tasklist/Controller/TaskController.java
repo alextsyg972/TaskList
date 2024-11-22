@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ws.task.tasklist.Entity.Task;
 import ws.task.tasklist.Entity.dto.task.TaskDto;
 import ws.task.tasklist.Entity.dto.validation.OnUpdate;
-import ws.task.tasklist.Service.Mappers.TaskMapper;
+import ws.task.tasklist.Service.mappers.TaskMapper;
 import ws.task.tasklist.Service.TaskService;
 
 @RestController

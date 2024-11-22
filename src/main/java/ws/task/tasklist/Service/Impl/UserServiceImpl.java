@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.update(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -65,9 +65,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Password confirmation don't match");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.create(user);
         Set<Role> roles = Set.of(Role.role_user);
-        userRepository.insertUserRole(user.getId(), Role.role_user);
+        userRepository.save(user);
         user.setRoles(roles);
         return user;
     }
@@ -83,6 +82,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @CacheEvict(value = "UserService:getById", key = "#userId")
     public void delete(Long userId) {
-        userRepository.delete(userId);
+        userRepository.deleteById(userId);
     }
 }
