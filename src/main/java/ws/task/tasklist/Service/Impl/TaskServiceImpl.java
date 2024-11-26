@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ws.task.tasklist.Entity.Status;
 import ws.task.tasklist.Entity.Task;
+import ws.task.tasklist.Entity.TaskImage;
 import ws.task.tasklist.Entity.User;
 import ws.task.tasklist.Exception.ResourceNotFoundException;
 import ws.task.tasklist.Repository.TaskRepository;
+import ws.task.tasklist.Service.ImageService;
 import ws.task.tasklist.Service.TaskService;
 import ws.task.tasklist.Service.UserService;
 
@@ -23,6 +25,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
 
     private final UserService userService;
+
+    private final ImageService imageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -62,8 +66,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "TaskService::getById", key = "id")
+    @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    @CacheEvict(value = "TaskService::getById", key = "#id")
+    @Override
+    public void uploadImage(Long id, TaskImage image) {
+        Task task = getById(id);
+        String fileName = imageService.upload(image);
+        task.getImages().add(fileName);
+        taskRepository.save(task);
     }
 }

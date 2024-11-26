@@ -1,7 +1,6 @@
 package ws.task.tasklist.Controller;
 
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -9,16 +8,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ws.task.tasklist.Exception.AccessDeniedException;
-import ws.task.tasklist.Exception.ExceptionBody;
-import ws.task.tasklist.Exception.ResourceMappingException;
-import ws.task.tasklist.Exception.ResourceNotFoundException;
+import ws.task.tasklist.Exception.*;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@RestControllerAdvice
+@RestControllerAdvice
 public class ControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -36,6 +31,12 @@ public class ControllerAdvice {
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleIllegalState(IllegalStateException e) {
+        return new ExceptionBody(e.getMessage());
+    }
+
+    @ExceptionHandler({ImageUploadException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpload(ImageUploadException e) {
         return new ExceptionBody(e.getMessage());
     }
 

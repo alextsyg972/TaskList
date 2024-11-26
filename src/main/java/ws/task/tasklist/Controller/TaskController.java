@@ -9,8 +9,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ws.task.tasklist.Entity.Task;
+import ws.task.tasklist.Entity.TaskImage;
 import ws.task.tasklist.Entity.dto.task.TaskDto;
+import ws.task.tasklist.Entity.dto.task.TaskImageDto;
 import ws.task.tasklist.Entity.dto.validation.OnUpdate;
+import ws.task.tasklist.Service.mappers.TaskImageMapper;
 import ws.task.tasklist.Service.mappers.TaskMapper;
 import ws.task.tasklist.Service.TaskService;
 
@@ -26,6 +29,7 @@ public class TaskController {
 
     private final TaskMapper taskMapper;
 
+    private final TaskImageMapper taskImageMapper;
 
 
     @PutMapping
@@ -51,6 +55,15 @@ public class TaskController {
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         taskService.delete(id);
         return new ResponseEntity<>("Task with id" + id + "was deleted", HttpStatus.GONE);
+    }
+
+    @PostMapping("/{id}/image")
+    @Operation(summary = "Upload image to task")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
+    public void uploadImage(@PathVariable Long id,
+                            @Validated @ModelAttribute TaskImageDto imageDto) {
+        TaskImage taskImage = taskImageMapper.toEntity(imageDto);
+        taskService.uploadImage(id,taskImage);
     }
 
 }
