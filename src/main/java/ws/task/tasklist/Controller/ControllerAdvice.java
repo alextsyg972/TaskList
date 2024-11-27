@@ -76,7 +76,7 @@ public class ControllerAdvice {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleAuthenticationException(AuthenticationException e) {
-        return  new ExceptionBody("Authentication fails");
+        return new ExceptionBody("Authentication fails");
     }
 
 }

@@ -20,7 +20,6 @@ import ws.task.tasklist.Service.UserService;
 import ws.task.tasklist.Service.props.JwtProperties;
 
 import javax.crypto.SecretKey;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;

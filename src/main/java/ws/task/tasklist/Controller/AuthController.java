@@ -13,8 +13,8 @@ import ws.task.tasklist.Entity.dto.auth.JwtResponse;
 import ws.task.tasklist.Entity.dto.user.UserDto;
 import ws.task.tasklist.Entity.dto.validation.OnCreate;
 import ws.task.tasklist.Service.AuthService;
-import ws.task.tasklist.Service.mappers.UserMapper;
 import ws.task.tasklist.Service.UserService;
+import ws.task.tasklist.Service.mappers.UserMapper;
 
 @RestController
 @RequestMapping("/api/v1/auth")

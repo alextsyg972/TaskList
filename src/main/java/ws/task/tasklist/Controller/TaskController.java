@@ -13,9 +13,9 @@ import ws.task.tasklist.Entity.TaskImage;
 import ws.task.tasklist.Entity.dto.task.TaskDto;
 import ws.task.tasklist.Entity.dto.task.TaskImageDto;
 import ws.task.tasklist.Entity.dto.validation.OnUpdate;
+import ws.task.tasklist.Service.TaskService;
 import ws.task.tasklist.Service.mappers.TaskImageMapper;
 import ws.task.tasklist.Service.mappers.TaskMapper;
-import ws.task.tasklist.Service.TaskService;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -63,7 +63,7 @@ public class TaskController {
     public void uploadImage(@PathVariable Long id,
                             @Validated @ModelAttribute TaskImageDto imageDto) {
         TaskImage taskImage = taskImageMapper.toEntity(imageDto);
-        taskService.uploadImage(id,taskImage);
+        taskService.uploadImage(id, taskImage);
     }
 
 }
