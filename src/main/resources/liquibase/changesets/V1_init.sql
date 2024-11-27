@@ -35,5 +35,5 @@ create table if not exists task_images
 (
     task_id bigint       not null,
     image   varchar(255) not null,
-    constraint fk_tasks_images_tasks foreign key (task_id) references tasks (id) on delete cascade on update no action
+    constraint fk_task_images_tasks foreign key (task_id) references tasks (id) on delete cascade on update no action
 )
