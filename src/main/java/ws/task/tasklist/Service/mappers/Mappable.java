@@ -1,7 +1,8 @@
 package ws.task.tasklist.Service.mappers;
 
 import java.util.List;
-public interface Mappable<E,D> {
+
+public interface Mappable<E, D> {
 
     D toDto(
             E entity

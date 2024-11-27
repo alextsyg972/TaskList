@@ -14,10 +14,10 @@ import ws.task.tasklist.Entity.dto.task.TaskDto;
 import ws.task.tasklist.Entity.dto.user.UserDto;
 import ws.task.tasklist.Entity.dto.validation.OnCreate;
 import ws.task.tasklist.Entity.dto.validation.OnUpdate;
-import ws.task.tasklist.Service.mappers.TaskMapper;
-import ws.task.tasklist.Service.mappers.UserMapper;
 import ws.task.tasklist.Service.TaskService;
 import ws.task.tasklist.Service.UserService;
+import ws.task.tasklist.Service.mappers.TaskMapper;
+import ws.task.tasklist.Service.mappers.UserMapper;
 
 import java.util.List;
 
@@ -33,7 +33,6 @@ public class UserController {
 
     private final UserMapper userMapper;
     private final TaskMapper taskMapper;
-
 
 
     @GetMapping("/{id}")
@@ -75,7 +74,7 @@ public class UserController {
     public TaskDto createTask(@PathVariable Long id,
                               @Validated(OnCreate.class) @RequestBody TaskDto taskDto) {
         Task task = taskMapper.toEntity(taskDto);
-        Task createdTask = taskService.create(task,id);
+        Task createdTask = taskService.create(task, id);
         return taskMapper.toDto(createdTask);
     }
 

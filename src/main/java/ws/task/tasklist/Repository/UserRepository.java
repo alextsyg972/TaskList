@@ -3,11 +3,11 @@ package ws.task.tasklist.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ws.task.tasklist.Entity.Role;
 import ws.task.tasklist.Entity.User;
 
 import java.util.Optional;
-public interface UserRepository extends JpaRepository<User,Long> {
+
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
@@ -18,5 +18,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
                 WHERE user_id = :userId
                 AND task_id = :taskId)
             """, nativeQuery = true)
-    boolean isTaskOwner(@Param("userId")Long userId, @Param("taskId") Long taskId);
+    boolean isTaskOwner(@Param("userId") Long userId, @Param("taskId") Long taskId);
 }

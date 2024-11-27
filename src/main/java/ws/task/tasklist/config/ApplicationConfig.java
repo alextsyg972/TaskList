@@ -66,6 +66,7 @@ public class ApplicationConfig {
         expressionHandler.setApplicationContext(applicationContext);
         return expressionHandler;
     }
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
