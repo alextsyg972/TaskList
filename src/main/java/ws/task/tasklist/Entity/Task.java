@@ -1,7 +1,7 @@
 package ws.task.tasklist.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,11 +10,14 @@ import java.util.List;
 @Entity
 @Table(name = "tasks")
 @Data
+@EqualsAndHashCode
 public class Task implements Serializable {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     private String title;
 

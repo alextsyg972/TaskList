@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @MutationMapping(name = "deleteUserById")
+    @MutationMapping(name = "deleteUser")
     @Operation(summary = "Delete user by id")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public ResponseEntity<String> deleteById(@PathVariable @Argument Long id) {
@@ -71,18 +71,21 @@ public class UserController {
     @QueryMapping(name = "tasksByUserId")
     @Operation(summary = "Get list TaskDto by id")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
-    public List<TaskDto> getTasksById(@PathVariable Long id) {
+    public List<TaskDto> getTasksById(@PathVariable @Argument Long id) {
         List<Task> tasks = taskService.getAllByUserId(id);
         return taskMapper.toDto(tasks);
     }
 
     @PostMapping("/{id}/tasks")
     @MutationMapping(name = "createTask")
-    @Operation(summary = "create task by id and TaskDto")
+    @Operation(summary = "Add task to user")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
-    public TaskDto createTask(@PathVariable @Argument Long id,
-                              @Validated(OnCreate.class) @Argument @RequestBody TaskDto taskDto) {
-        Task task = taskMapper.toEntity(taskDto);
+    public TaskDto createTask(
+            @PathVariable("id") @Argument final Long id,
+            @Validated(OnCreate.class)
+            @RequestBody @Argument final TaskDto dto
+    ) {
+        Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.create(task, id);
         return taskMapper.toDto(createdTask);
     }

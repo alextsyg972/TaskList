@@ -106,7 +106,7 @@ public class ApplicationConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers("api/v1/auth/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/graphql").permitAll()
+                                .requestMatchers("/graphiql").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest()
                                 .authenticated())
