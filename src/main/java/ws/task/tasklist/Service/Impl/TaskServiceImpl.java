@@ -14,6 +14,9 @@ import ws.task.tasklist.Repository.TaskRepository;
 import ws.task.tasklist.Service.ImageService;
 import ws.task.tasklist.Service.TaskService;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,8 +31,17 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Cacheable(value = "TaskService::getById", key = "#id")
     public Task getById(final Long id) {
+
+
         return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found."));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Task> getAllSoonTasks(Duration duration) {
+        LocalDateTime now = LocalDateTime.now();
+        return taskRepository.findAllSoonTasks(Timestamp.valueOf(now),Timestamp.valueOf(now.plus(duration)));
     }
 
     @Override

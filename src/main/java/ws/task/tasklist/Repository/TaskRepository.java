@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ws.task.tasklist.Entity.Task;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -36,5 +37,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             @Param("id") Long id,
             @Param("fileName") String fileName
     );
+
+    @Query(value = """
+            Select * from tasks t 
+            WHERE t.expiration_date is not null
+            and t.expiration_date between :start and :end
+            """, nativeQuery = true)
+    List<Task> findAllSoonTasks(@Param("start")Timestamp timestamp,
+                                @Param("end")Timestamp end);
 
 }
